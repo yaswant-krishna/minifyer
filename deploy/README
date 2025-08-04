@@ -1,0 +1,15 @@
+From your command line, run:
+
+docker build --platform linux/x86_64 -f Dockerfile_base --progress=plain -t minifyer_base .
+docker build --platform linux/x86_64 -f Dockerfile --progress=plain -t minifyer:latest .
+
+Then, to push on heroku:
+
+heroku container:login
+heroku create minifyer-0-0-0-9000
+heroku container:push web --app minifyer-0-0-0-9000
+heroku container:release web --app minifyer-0-0-0-9000
+heroku open --app minifyer-0-0-0-9000
+
+> Be sure to have the heroku CLI installed.
+> You can replace minifyer-0-0-0-9000 with another app name.
