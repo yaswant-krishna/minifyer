@@ -1,0 +1,21 @@
+# Don't copy Git metadata
+.git
+.gitignore
+
+# Don't copy RStudio or session history
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rproj
+
+# Don't copy README or dev scripts
+README.md
+dev/
+
+# Ignore renv user-specific/temporary folders
+renv/library/
+renv/local/
+renv/cellar/
+renv/python/
+renv/sandbox/
