@@ -1,4 +1,6 @@
+library(golem)
+
 test_that("app server", {
   server <- app_server
-  expect_is(server, "function")
+  expect_type(server, "closure")
 })
