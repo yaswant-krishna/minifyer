@@ -88,8 +88,8 @@ mod_left_ui <- function(id) {
 #' left Server Functions
 #'
 #' @noRd 
-mod_left_server <- function(id){
-  moduleServer(id, function(input, output, session, r){
+mod_left_server <- function(id, r){
+  moduleServer(id, function(input, output, session){
     ns <- session$ns
     
     observeEvent( input$launch , {

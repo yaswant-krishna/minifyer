@@ -46,12 +46,8 @@ mod_right_ui <- function(id){
 #' right Server Function
 #'
 #' @noRd 
-mod_right_server <- function(
-    input, 
-    output, 
-    session, 
-    r
-){
+mod_right_server <- function(id, r) {
+moduleServer(id, function(input, output, session) {
   ns <- session$ns
   
   output$original <- renderPrint({
@@ -62,6 +58,7 @@ mod_right_server <- function(
     cat(gsub(" ", "", r$text))
   })
   
+})
 }
 
 ## To be copied in the UI
