@@ -6,26 +6,66 @@
 #'
 #' @noRd 
 #'
-#' @importFrom shiny NS tagList 
-mod_right_ui <- function(id) {
+#' @importFrom shiny NS tagList
+#' @import magrittr
+mod_right_ui <- function(id){
   ns <- NS(id)
   tagList(
- 
+    tags$div(
+      class = "right split", 
+      tags$div(
+        class = "fifty", 
+        tags$div(
+          class = "innerdiv",
+          tags$div(
+            class = "",
+            tags$h4("Original content"),
+            textOutput(ns("original")) %>%
+              tagAppendAttributes(
+                class = "fixed"
+              )
+          )
+        )
+      ), 
+      tags$div(
+        class = "fifty", 
+        tags$div(
+          class = "innerdiv",
+          tags$div(
+            class = "",
+            tags$h4("Minified content"),
+            textOutput(ns("minified")) %>%
+              tagAppendAttributes(class = "fixed")
+          )
+        )
+      )
+    )
   )
 }
-    
-#' right Server Functions
+
+#' right Server Function
 #'
 #' @noRd 
-mod_right_server <- function(id){
-  moduleServer(id, function(input, output, session){
-    ns <- session$ns
- 
+mod_right_server <- function(
+    input, 
+    output, 
+    session, 
+    r
+){
+  ns <- session$ns
+  
+  output$original <- renderPrint({
+    cat(r$text)
   })
+  
+  output$minified <- renderPrint({
+    cat(gsub(" ", "", r$text))
+  })
+  
 }
-    
+
 ## To be copied in the UI
-# mod_right_ui("right_1")
-    
+# 
+
 ## To be copied in the server
-# mod_right_server("right_1")
+# 

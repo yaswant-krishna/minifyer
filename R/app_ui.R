@@ -10,7 +10,9 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     fluidPage(
-      golem::golem_welcome_page() # Remove this line to start building your UI
+      class = "split",
+      mod_left_ui("left_ui_1"),
+      mod_right_ui("right_ui_1")
     )
   )
 }

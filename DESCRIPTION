@@ -8,6 +8,7 @@ License: MIT + file LICENSE
 Imports: 
     config,
     golem,
+    magrittr,
     minifyr,
     shinipsum,
     shiny
