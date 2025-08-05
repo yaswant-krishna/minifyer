@@ -10,3 +10,4 @@ $run_dev.*
 ^deploy$
 ^codecov\.yml$
 ^\.github$
+^LICENSE\.md$
