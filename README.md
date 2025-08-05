@@ -1,3 +1,8 @@
+<!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/yaswant-krishna/minifyer/graph/badge.svg)](https://app.codecov.io/gh/yaswant-krishna/minifyer)
+[![R-CMD-check](https://github.com/yaswant-krishna/minifyer/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/yaswant-krishna/minifyer/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 # Minifyer 🗜️
 
 A lightweight web application for minifying CSS, JavaScript, HTML, and JSON files built with **R Shiny** and the **golem framework**.
