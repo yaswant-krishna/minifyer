@@ -46,16 +46,30 @@ mod_right_ui <- function(id){
 #' right Server Function
 #'
 #' @noRd 
-mod_right_server <- function(id, r) {
+mod_right_server <- function(id, file) {
 moduleServer(id, function(input, output, session) {
   ns <- session$ns
   
   output$original <- renderPrint({
-    cat(r$text)
+    gargoyle::watch("uploaded")
+    if (is.null(file$original_file)){
+      cat(" ")
+    } else {
+      cat(
+        readLines(file$original_file),
+        sep = "\n"
+      )
+    }
+    
   })
   
   output$minified <- renderPrint({
-    cat(gsub(" ", "", r$text))
+    gargoyle::watch("minified")
+    req(file$minified_file)
+    cat(
+      readLines(file$minified_file),
+      sep = "\n"
+    )
   })
   
 })

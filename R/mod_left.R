@@ -88,36 +88,79 @@ mod_left_ui <- function(id) {
 #' left Server Functions
 #'
 #' @noRd 
-mod_left_server <- function(id, r){
+mod_left_server <- function(id, file){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
     
-    observeEvent( input$launch , {
-      r$text <-  shinipsum::random_text(
-        nwords = 1000, 
-        offset = sample(100:1000, 1)
+    golem::invoke_js("disableid", list(id = ns("dl")))
+    
+    observeEvent( input$upload , {
+      if (
+        # We are double-checking the extension, so that we are sure people messing 
+        # with the UI won't be able to upload other type of files
+        tolower(tools::file_ext(input$upload$datapath)) %in% c("js", "html", "css", "json")
+      ) {
+        # Use loaded_ to store our guess
+        file$original_file <- input$upload$datapath
+        file$guess_minifier()
+        file$type <- input$upload$type
+        file$minified_file <- NULL
+        file$original_name <- input$upload$name
+        gargoyle::trigger("uploaded")
+        golem::invoke_js("disableid", list(id = ns("dl")))
+      } else {
+        # show a notif if the file isn't loaded
+        showNotification(
+          "Unable to load your file", 
+          type = "error"
+        )
+      }
+    })
+    
+    
+    observeEvent( gargoyle::watch("uploaded") , {
+      updateSelectInput(
+        session,
+        "algo",
+        choices = file$minifier$functions
       )
     })
     
+    observeEvent( input$launch , {
+      withProgress(
+        message = "Minification in  progress", 
+        file$compress(input$algo)
+      )
+      gargoyle::trigger("minified")
+      golem::invoke_js("undisableid", list(id = ns("dl")))
+    })
+    
     output$gain <- renderUI({
-      req(input$launch)
+      gargoyle::watch("minified")
+      req(file$original_file)
+      req(file$minified_file)
+      res <- file$compare()
+      if (!grepl("B", res)){
+        res <- sprintf("%sB", res)
+      }
       tags$p(
         align = "center",
         sprintf(
-          "You've gain %s \U0001f389", 
-          sample(100:1000, 1)
+          "You've gain %s \U0001f389",
+          res
         )
       )
     })
     
-    
-    observeEvent(TRUE, {
-      updateSelectInput(
-        session, 
-        "algo", 
-        choices = LETTERS[1:10]
-      )
-    })
+    output$dl <- downloadHandler(
+      filename = function() {
+        paste(tools::file_path_sans_ext(file$original_name), '-minified.', file$type, sep='')
+      },
+      content = function(con) {
+        write(file$minified_file, con)
+      },
+      contentType =  file$type
+    )
  
   })
 }
